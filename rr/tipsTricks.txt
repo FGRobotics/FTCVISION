@@ -1,0 +1,70 @@
+roadrunner tips and tricks- all the code should be in an old repository and tuning steps are on the website
+
+
+roadrunner gui- https://learnroadrunner.com/tool/road-runner-gui.html
+
+Making it go faster-----------------------------------------
+
+/* Lines 120-121 in SampleMecanumDrive.java */
+
+follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
+    new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+//   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   ^^^
+//            Admissible Error Pose          Timeout (seconds)
+
+
+timeout is the amount of seconds the internal timer will run after the trajectory is finished to try and correct itself
+
+First of all- ending a trajectory will make the bot come to a halt
+
+drive.followTrajectory(traj1);
+robot.dropServo();
+drive.followTrajectory(traj2);
+drive.followTrajectory(traj3);
+
+Will stop after each trajectory and will do each synchronously(one after the other). THERE IS A ONE OR TWO SECOND WAIT IN BETWEEN EACH
+
+Soo... Use multiple .spline movements inside the trajectory to make the movement more continuous
+
+Trajectory traj3 = drive.trajectoryBuilder(traj2.end())
+  .splineTo(new Vector2d(5, 6), 0)
+  .splineTo(new Vector2d(9, -10), 0)
+  .build();
+  
+  
+  interupting a trajectory: https://github.com/NoahBres/road-runner-quickstart/blob/advanced-examples/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/advanced/AutoBreakTrajectory.java
+  
+ ASYNC RR--------------------------------------------------
+  
+Trajectory trajectory1;
+Trajectory trajectory2;
+Trajectory trajectory3;
+
+public void init() {
+  trajectory1 = drive.trajectoryBuilder(new Pose2d())
+    .lineTo(new Vector2d())
+    .addDisplacementMarker(() -> drive.followTrajectoryAsync(trajectory2))
+    // Basically just tells RR to follow the next trajectory at the end of this one
+    .build();
+
+  trajectory2 = drive.trajectoryBuilder(trajectory1.end())
+    .lineTo(new Vector2d())
+    .addDisplacementMarker(() -> drive.followTrajectoryAsync(trajectory3))
+    .build();
+
+  trajectory3 = drive.trajectoryBuilder(trajectory2.end())
+    .lineTo(new Vector2d())
+    .build();
+
+  // Be sure to set the drive to follow the first trajectory in init
+  drive.followTrajectoryAsync(trajectory1);
+}
+
+public void loop() {
+  drive.update();
+  lift.update(); // Update some lift pid in the background or whatever- you can use the IMU's accelerometer to approximate distance too so you can run things at certain distances
+}
+
+ 
+ 
+
