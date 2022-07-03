@@ -1,0 +1,1 @@
+You can use openCv to retreive Red Green Blue color values from each pixel
