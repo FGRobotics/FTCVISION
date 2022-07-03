@@ -98,7 +98,7 @@ public class contourPipeline extends OpenCvPipeline {
             Rect rect = Imgproc.boundingRect(areaPoints);
 
             Imgproc.rectangle(end, rect, new Scalar(255, 0, 0));
-            ;
+            
 
             midpoint = (rect.x + (rect.x + rect.width)) / 2;
 
