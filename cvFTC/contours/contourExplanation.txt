@@ -1,0 +1,1 @@
+Contours are an edge detection method that highlights continous boundaries of colors. Essentially it will look for changes in color, or gradients and highlight them as contours
