@@ -44,7 +44,7 @@ public class contourPipeline extends OpenCvPipeline {
             Scalar scalarLowerHSV = new Scalar(30.0, 71.4, 40.0);//HSV for now
             Scalar scalarUpperHSV = new Scalar(endHSV, 255.0, 255.0);//HSV for now
             
-            //Those are the boundaries of the accepted colors in HSV- which can be found be searching up color picker and translating each one to openCV hsv
+            //Those are the boundaries of the accepted colors in HSV
             
             //open cv- Hue goes to 179, the other two go to 255
             //google - Hue goes to 360, the other two are percentages out of 100%
