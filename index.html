@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  
+
+    <!-- Import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- Import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    
+    <canvas id="display"></canvas>
+    
+    <style>
+      
+      #display{
+        width:800px;
+        height:auto;
+      }
+    
+    </style>
+    
+    <img id="imageElement"/>
+    
+    
+    
+    <div id = "sidebar">
+      <t>Hue Start(0-179)</t>
+      <br>
+      <input type="number" id = "hueStart" value = "0" min = "0" max = "179">
+      
+      <br>
+      
+      <t>Hue End(0-179)</t>
+      <br>
+      <input type="number" id = "hueEnd" value = "179" min = "0" max = "179">
+      <br>
+      <t>Saturation Start(0-255)</t>
+      <br>
+      <input type="number" id = "satStart" value = "0" min = "0" max = "255">
+      <br>
+      <t>Saturation End(0-255)</t>
+      <br>
+      <input type="number" id = "satEnd" value = "255" min = "0" max = "255">
+      <br>
+      
+      <t>Value Start(0-255)</t>
+      <br>
+      
+      <input type="number" id = "valStart" value = "0" min = "0" max = "255">
+      <br>
+      
+      <t>Value End(0-255)</t>
+      <br>
+      <input type="number" id = "valEnd" value = "255" min = "0" max = "255">
+      
+      <br>
+      
+      <button onclick = "reload()">
+        Submit
+      </button>
+      
+      
+      
+      <br>
+      <br>
+      <br>
+      
+      
+      
+      
+      
+      <input type="file" id="fileInput" name="filename">
+      
+      <br>
+      <br>
+      <br>
+      
+      <button onclick="loadGreen()">
+        load green hsv range
+      </button>
+      
+      
+      
+    </div>
+    
+    <script async src="opencv.js" type="text/javascript"></script>
+    
+    
+    
+    <script type="text/javascript">
+      
+      let inputElement = document.getElementById("fileInput");
+      
+      let imgElement = document.getElementById("imageElement")
+      
+      
+      
+     function loadGreen(){
+        document.getElementById("hueStart").value = 30;
+        document.getElementById("hueEnd").value = 80;
+        
+        document.getElementById("satStart").value = 71.4;
+        document.getElementById("satEnd").value = 255;
+        
+        document.getElementById("valStart").value = 40;
+        document.getElementById("valEnd").value = 255;
+        
+      }
+      
+      
+      function reload(){
+        
+        try{
+        
+        console.log("reloaded")
+        
+        
+        imgElement.src = URL.createObjectURL(inputElement.files[0]);
+        
+      
+      
+        imgElement.onload = function() {
+        
+        
+        let hsv = cv.imread(imgElement);
+          
+        let end = cv.imread(imgElement);
+        
+        
+        cv.cvtColor(hsv, hsv, cv.COLOR_RGB2HSV, 0);
+          
+        
+          
+          
+        let a = parseFloat(document.getElementById("hueStart").value);
+        let b = parseFloat(document.getElementById("hueEnd").value);
+          
+        let c = parseFloat(document.getElementById("satStart").value);
+        let d = parseFloat(document.getElementById("satEnd").value);
+          
+        let e = parseFloat(document.getElementById("valStart").value);
+        let f = parseFloat(document.getElementById("valEnd").value);
+          
+        
+        const lower = [a, c, e, e];
+        const upper = [b, d, f, f];
+
+        const low = new cv.Mat(hsv.rows, hsv.cols, hsv.type(), lower);
+        const high = new cv.Mat(hsv.rows, hsv.cols, hsv.type(), upper);
+          
+        cv.inRange(hsv, low, high, hsv);
+          
+          
+        
+      
+        cv.morphologyEx(hsv, hsv, cv.MORPH_CLOSE, new cv.Mat());
+          
+        let ksize = new cv.Size(9, 9);
+          
+        cv.GaussianBlur(hsv, hsv, ksize, 0, 0, cv.BORDER_DEFAULT);
+        
+        
+        //draw contours
+        
+        let contours = new cv.MatVector();
+          
+        let hierarchy = new cv.Mat();
+        
+        cv.findContours(hsv, contours, hierarchy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE);
+          
+          
+        for(var i = 0; i<contours.size(); i++){
+          
+            let areaPoints = contours.get(i)
+
+            let rect = cv.boundingRect(areaPoints);
+          
+            let point1 = new cv.Point(rect.x, rect.y);
+            let point2 = new cv.Point(rect.x + rect.width, rect.y + rect.height);
+
+            cv.rectangle(end, point1, point2, new cv.Scalar(0,255, 255, 255));
+        }
+        
+        
+        
+        
+        
+        
+        
+        cv.imshow("display", end);
+      
+        imgElement.src = '';
+      
+        hsv.delete();
+          
+        }
+        }catch(e){
+          console.log(e);
+        }
+        
+        
+      }
+      
+      
+      
+    
+    
+    </script>
+    
+    
+    
+    
+  </body>
+</html>

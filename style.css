@@ -1,0 +1,14 @@
+body{
+  background-color: DarkSlateGrey;
+}
+
+#sidebar{
+  background-color: White;
+  display: block;
+  width: 20%;
+  position: fixed;
+  height: 100%;
+  right:0;
+  top:0;
+  
+}
