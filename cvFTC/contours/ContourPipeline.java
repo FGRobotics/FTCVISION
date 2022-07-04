@@ -57,6 +57,7 @@ public class contourPipeline extends OpenCvPipeline {
             //filters out all colors not in this range
             Core.inRange(src, scalarLowerHSV, scalarUpperHSV, src);
             // Remove Noise
+            //choose one or the other or they cancel things out, I AM USING CLOSE
             Imgproc.morphologyEx(src, src, Imgproc.MORPH_OPEN, new Mat());
             Imgproc.morphologyEx(src, src, Imgproc.MORPH_CLOSE, new Mat());
             // GaussianBlur
