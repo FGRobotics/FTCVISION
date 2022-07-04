@@ -46,7 +46,9 @@ public class contourPipeline extends OpenCvPipeline {
             
             //open cv- Hue goes to 179, the other two go to 255
             //google - Hue goes to 360, the other two are percentages out of 100%
-            //translate google color picker for open cv and put those here, tune if needed
+            
+            //I found that translating them doesn't really work so I just made an easier range finder: https://tejusk2.github.io/FTCVSION/
+            
             
             
             //gets the image ready for contour detection
@@ -57,7 +59,7 @@ public class contourPipeline extends OpenCvPipeline {
             //filters out all colors not in this range
             Core.inRange(src, scalarLowerHSV, scalarUpperHSV, src);
             // Remove Noise
-            //choose one or the other or they cancel things out, I AM USING CLOSE
+            //choose one or the other or they cancel things out, I AM USING CLOSE and it is being used in the range finder
             Imgproc.morphologyEx(src, src, Imgproc.MORPH_OPEN, new Mat());
             Imgproc.morphologyEx(src, src, Imgproc.MORPH_CLOSE, new Mat());
             // GaussianBlur
