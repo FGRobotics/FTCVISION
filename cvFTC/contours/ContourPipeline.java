@@ -17,6 +17,8 @@ import java.util.List;
 
 public class contourPipeline extends OpenCvPipeline {
     int midpoint;
+    
+    double endHSV = 80.0
 
     @Override
     public Mat processFrame(Mat input) {
@@ -40,7 +42,7 @@ public class contourPipeline extends OpenCvPipeline {
 
 
             Scalar scalarLowerHSV = new Scalar(30.0, 71.4, 40.0);//HSV for now
-            Scalar scalarUpperHSV = new Scalar(80.0, 255.0, 255.0);//HSV for now
+            Scalar scalarUpperHSV = new Scalar(endHSV, 255.0, 255.0);//HSV for now
             
             //Those are the boundaries of the accepted colors in HSV- which can be found be searching up color picker and translating each one to openCV hsv
             
@@ -117,7 +119,10 @@ public class contourPipeline extends OpenCvPipeline {
 
             return end;
         }catch(IndexOutOfBoundsException e){
-            int one = 1;
+            //do whatever you want with the error
+            endHSV += 0.1;
+            //I extend the hue range
+            
 
         }
 
