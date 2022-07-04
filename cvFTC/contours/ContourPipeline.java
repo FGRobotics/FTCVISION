@@ -79,6 +79,10 @@ public class contourPipeline extends OpenCvPipeline {
             //finds contour
             Imgproc.findContours(src, contours, hierarchey, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
             
+            //Now that you have the arrayList of contours, it is up to you to do the rest, the rest of this code is specific to FREIGHT FRENZY
+            //check out the drawing rectangles code below though
+            
+            
             //sorts through and finds largest one
 
             int largestIndex = 0;
@@ -97,6 +101,8 @@ public class contourPipeline extends OpenCvPipeline {
 
 
             //Draw rectangle on largest contours
+            
+            //Drawing rectangles are actually pretty important I suggest that you learn this
 
             MatOfPoint2f areaPoints = new MatOfPoint2f(contours.get(largestIndex).toArray());
 
