@@ -102,7 +102,7 @@ public class contourPipeline extends OpenCvPipeline {
 
             //Draw rectangle on largest contours
             
-            //Drawing rectangles are actually pretty important I suggest that you learn this
+            //Drawing rectangles is actually pretty important I suggest that you learn this
 
             MatOfPoint2f areaPoints = new MatOfPoint2f(contours.get(largestIndex).toArray());
 
