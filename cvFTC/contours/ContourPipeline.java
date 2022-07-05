@@ -49,7 +49,7 @@ public class contourPipeline extends OpenCvPipeline {
             //open cv- Hue goes to 179, the other two go to 255
             //google - Hue goes to 360, the other two are percentages out of 100%
             
-            //I found that translating them doesn't really work so I just made an easier range finder: https://tejusk2.github.io/FTCVSION/
+            //I found that translating them doesn't really work so I just made an easier range finder: https://tejusk2.github.io/FTCVISION/
             
             
             
